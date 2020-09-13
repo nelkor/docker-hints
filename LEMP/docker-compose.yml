@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  nginx:
+    image: nginx:alpine
+    volumes:
+      - ./front/app:/app
+      - ./front/nginx.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - 3030:80
+
+  php:
+    build: ./back
+    volumes:
+      - ./back/app:/app
+
+  db:
+    image: mariadb
+    environment:
+      MYSQL_DATABASE: wika
+      MYSQL_USER: wicker
+      MYSQL_PASSWORD: wicked
+      MYSQL_ROOT_PASSWORD: secret
+    volumes:
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./db/store:/var/lib/mysql
+
+  adminer:
+    image: adminer
+    ports:
+      - 3031:8080
