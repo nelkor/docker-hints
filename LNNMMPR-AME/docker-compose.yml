@@ -1,0 +1,58 @@
+version: '3'
+
+services:
+  php:
+    build: http
+    container_name: sli_php
+    volumes:
+    - ./http:/app
+
+  node:
+    build: websocket
+
+  nginx:
+    image: nginx:alpine
+    volumes:
+    - ./frontend:/app
+    - ./nginx:/etc/nginx/conf.d
+    - ./log:/log
+    ports:
+    - 5113:80
+
+  maria:
+    image: mariadb
+    volumes:
+    - ./store/maria:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: chat
+      MYSQL_USER: chad
+      MYSQL_PASSWORD: char
+      MYSQL_ROOT_PASSWORD: roots
+    ports:
+    - 3306:3306
+
+  mongo:
+    image: mongo
+    volumes:
+    - ./store/mongo:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: chad
+      MONGO_INITDB_ROOT_PASSWORD: char
+
+  redis:
+    image: redis
+
+  adminer:
+    image: adminer
+    environment:
+      ADMINER_DEFAULT_SERVER: maria
+    ports:
+    - 5114:8080
+
+  mongo-express:
+    image: mongo-express
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: chad
+      ME_CONFIG_MONGODB_ADMINPASSWORD: char
+    ports:
+    - 5115:8081

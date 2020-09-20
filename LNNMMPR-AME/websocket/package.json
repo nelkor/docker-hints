@@ -1,0 +1,10 @@
+{
+  "name": "chat",
+  "version": "1.0.0",
+  "private": true,
+  "author": "Nelkor",
+  "license": "MIT",
+  "dependencies": {
+    "ws": "^7.3.1"
+  }
+}
